@@ -8,8 +8,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  const data = {
+    recipient: req.body.recipient,
+    username: req.body.username,
+  };
+
   try {
-    await sendEmail(req.body.recipient);
+    await sendEmail(data);
     res.status(200).json({
       status: 200,
       data: 'Message sent Succesfully!',

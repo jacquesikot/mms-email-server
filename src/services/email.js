@@ -1,5 +1,17 @@
 const nodemail = require('nodemailer');
 const { google } = require('googleapis');
+const handlebars = require('handlebars');
+const fs = require('fs');
+
+const readHTMLFile = (path, callback) => {
+  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+    if (err) {
+      console.log(err);
+    } else {
+      callback(null, html);
+    }
+  });
+};
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -38,21 +50,35 @@ const createTransporter = async () => {
   return transporter;
 };
 
-const sendMail = async (recipient) => {
-  const mailOptions = {
-    from: process.GOOGLE_MAIL,
-    to: recipient,
-    subject: 'Welcome to Mac Music School',
-    text: 'Welcome to Mac Music School',
-    html: '<h1>Welcome to Mac Music School</h1>',
-  };
+const sendMail = async (data) => {
+  readHTMLFile(
+    '/Users/mac/Documents/code/mms-email-server/src//templates/index.html',
+    async (err, html) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const template = handlebars.compile(html);
+        const replacements = {
+          username: data.username,
+        };
+        const htmlToSend = template(replacements);
 
-  try {
-    const emailTransporter = await createTransporter();
-    await emailTransporter.sendMail(mailOptions);
-  } catch (error) {
-    console.log(error);
-  }
+        const mailOptions = {
+          from: process.GOOGLE_MAIL,
+          to: data.recipient,
+          subject: 'Welcome to Mac Music School',
+          html: htmlToSend,
+        };
+
+        try {
+          const emailTransporter = await createTransporter();
+          await emailTransporter.sendMail(mailOptions);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  );
 };
 
 module.exports = sendMail;
