@@ -1,16 +1,23 @@
 const express = require('express');
 const router = express.Router();
 
+const generateQrCode = require('../services/qrcode');
+
 const sendEmail = require('../services/email');
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   res.send('mail endpoint fine');
 });
 
 router.post('/', async (req, res) => {
+  const qrCode = await generateQrCode(req.body.url);
+
   const data = {
     recipient: req.body.recipient,
-    username: req.body.username,
+    wardName: req.body.wardName,
+    studentName: req.body.studentName,
+    studentClass: req.body.studentClass,
+    qrCode,
   };
 
   try {

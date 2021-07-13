@@ -18,5 +18,8 @@
     "joi": "^17.4.1",
     "nodemailer": "^6.6.2",
     "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "qrcode": "^1.4.4"
   }
 }

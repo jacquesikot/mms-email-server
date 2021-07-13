@@ -47,15 +47,20 @@ const sendMail = async (data) => {
   );
   const source = fs.readFileSync(filePath, 'utf-8').toString();
   const template = handlebars.compile(source);
+
   const replacements = {
-    username: data.username,
+    wardName: data.wardName,
+    studentName: data.studentName,
+    studentClass: data.studentClass,
+    qrCode: data.qrCode,
   };
   const htmlToSend = template(replacements);
 
   const mailOptions = {
     from: process.GOOGLE_MAIL,
     to: data.recipient,
-    subject: 'Welcome to Mac Music School',
+    subject: `MAC MUSIC SCHOOL: SUMMER CAMP ${new Date().getFullYear()}`,
+    attachDataUrls: true,
     html: htmlToSend,
     attachments: [
       {
