@@ -42,9 +42,7 @@ const createTransporter = async () => {
 };
 
 const sendMail = async (data) => {
-  const filePath = path.join(
-    '/Users/mac/Documents/code/mms-email-server/src/templates/index.html'
-  );
+  const filePath = path.join(__dirname + '/templates/index.html');
   const source = fs.readFileSync(filePath, 'utf-8').toString();
   const template = handlebars.compile(source);
 
@@ -65,7 +63,7 @@ const sendMail = async (data) => {
     attachments: [
       {
         filename: 'logo.png',
-        path: '/Users/mac/Documents/code/mms-email-server/src/templates/images/logo.png',
+        path: __dirname + '/templates/images/logo.png',
         cid: 'logo',
       },
     ],
