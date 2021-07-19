@@ -51,18 +51,17 @@ const readHTMLFile = (path, callback) => {
   });
 };
 
-const sendMail = async (data) => {
+const sendTutorMail = async (data) => {
   readHTMLFile(
-    path.join(__dirname + '/templates/index.html'),
+    path.join(__dirname + '/templates/tutorIndex.html'),
     async (err, html) => {
       if (err) {
         console.log(err);
       } else {
         const template = handlebars.compile(html);
         const replacements = {
-          wardName: data.wardName,
-          studentName: data.studentName,
-          studentClass: data.studentClass,
+          name: data.name,
+          class: data.class,
           qrCode: data.qrCode,
         };
         const htmlToSend = template(replacements);
@@ -81,6 +80,7 @@ const sendMail = async (data) => {
             },
           ],
         };
+
         try {
           const emailTransporter = await createTransporter();
           await emailTransporter.sendMail(mailOptions);
@@ -92,4 +92,4 @@ const sendMail = async (data) => {
   );
 };
 
-module.exports = sendMail;
+module.exports = sendTutorMail;
