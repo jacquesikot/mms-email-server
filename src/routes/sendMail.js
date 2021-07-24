@@ -22,12 +22,14 @@ router.post('/', async (req, res) => {
 
   try {
     await sendEmail(data);
+
     res.status(200).json({
       status: 200,
       data: 'Message sent Succesfully!',
     });
   } catch (error) {
     console.log(error);
+
     res.status(400).json({
       status: 400,
       message: 'Error sending email',

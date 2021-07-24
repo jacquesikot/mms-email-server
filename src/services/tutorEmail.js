@@ -3,6 +3,7 @@ const { google } = require('googleapis');
 const handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
+const htmlToImage = require('./htmlToImg');
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -59,12 +60,26 @@ const sendTutorMail = async (data) => {
         console.log(err);
       } else {
         const template = handlebars.compile(html);
+
         const replacements = {
           name: data.name,
           class: data.class,
           qrCode: data.qrCode,
+          logo: 'cid:logo',
         };
         const htmlToSend = template(replacements);
+
+        const replacementsImg = {
+          name: data.name,
+          class: data.class,
+          qrCode: data.qrCode,
+        };
+
+        const htmlToImg = template(replacementsImg);
+
+        await htmlToImage(data.name.trim() + '.png', htmlToImg, {
+          logo: __dirname + '/templates/images/logo.png',
+        });
 
         const mailOptions = {
           from: process.GOOGLE_MAIL,
@@ -77,6 +92,11 @@ const sendTutorMail = async (data) => {
               filename: 'logo.png',
               path: __dirname + '/templates/images/logo.png',
               cid: 'logo',
+            },
+            {
+              filename: `${data.name.trim()}.png`,
+              path: __dirname + `/htmlImages/${data.name.trim()}.png`,
+              cid: 'tag',
             },
           ],
         };
