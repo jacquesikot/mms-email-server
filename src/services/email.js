@@ -80,13 +80,11 @@ const sendMail = async (data) => {
 
         const htmlToImg = template(replacementsImg);
 
-        await htmlToImage(
-          data.studentName.trim() + Math.random() + '.png',
-          htmlToImg,
-          {
-            logo: __dirname + '/templates/images/logo.png',
-          }
-        );
+        const fileName = data.studentName.trim() + Math.random() + '.png';
+
+        await htmlToImage(fileName, htmlToImg, {
+          logo: __dirname + '/templates/images/logo.png',
+        });
 
         const mailOptions = {
           from: process.GOOGLE_MAIL,
@@ -101,8 +99,8 @@ const sendMail = async (data) => {
               cid: 'logo',
             },
             {
-              filename: `${data.studentName.trim()}.png`,
-              path: __dirname + `/htmlImages/${data.studentName.trim()}.png`,
+              filename: fileName,
+              path: __dirname + `/htmlImages/${fileName}`,
               cid: 'tag',
             },
           ],
