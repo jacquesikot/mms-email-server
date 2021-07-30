@@ -69,17 +69,17 @@ const sendTutorMail = async (data) => {
         };
         const htmlToSend = template(replacements);
 
-        const replacementsImg = {
-          name: data.name,
-          class: data.class,
-          qrCode: data.qrCode,
-        };
+        // const replacementsImg = {
+        //   name: data.name,
+        //   class: data.class,
+        //   qrCode: data.qrCode,
+        // };
 
-        const htmlToImg = template(replacementsImg);
+        // const htmlToImg = template(replacementsImg);
 
-        await htmlToImage(data.name.trim() + '.png', htmlToImg, {
-          logo: __dirname + '/templates/images/logo.png',
-        });
+        // await htmlToImage(data.name.trim() + '.png', htmlToImg, {
+        //   logo: __dirname + '/templates/images/logo.png',
+        // });
 
         const mailOptions = {
           from: process.GOOGLE_MAIL,
@@ -93,11 +93,11 @@ const sendTutorMail = async (data) => {
               path: __dirname + '/templates/images/logo.png',
               cid: 'logo',
             },
-            {
-              filename: `${data.name.trim()}.png`,
-              path: __dirname + `/htmlImages/${data.name.trim()}.png`,
-              cid: 'tag',
-            },
+            // {
+            //   filename: `${data.name.trim()}.png`,
+            //   path: __dirname + `/htmlImages/${data.name.trim()}.png`,
+            //   cid: 'tag',
+            // },
           ],
         };
 

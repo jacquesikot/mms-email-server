@@ -70,21 +70,27 @@ const sendMail = async (data) => {
         };
         const htmlToSend = template(replacements);
 
-        const replacementsImg = {
-          wardName: data.wardName,
-          studentName: data.studentName,
-          studentClass: data.studentClass,
-          qrCode: data.qrCode,
-          logo: 'cid:logo',
-        };
+        const logoImg = fs.readFileSync(
+          __dirname + '/templates/images/logo.png'
+        );
+        const base64Image = new Buffer.from(logoImg).toString('base64');
+        const logoImgUri = 'data:image/jpeg;base64,' + base64Image;
 
-        const htmlToImg = template(replacementsImg);
+        // const replacementsImg = {
+        //   wardName: data.wardName,
+        //   studentName: data.studentName,
+        //   studentClass: data.studentClass,
+        //   qrCode: data.qrCode,
+        //   logo: logoImgUri,
+        // };
 
-        const fileName = data.studentName.trim() + Math.random() + '.png';
+        // const htmlToImg = template(replacementsImg);
 
-        await htmlToImage(fileName, htmlToImg, {
-          logo: __dirname + '/templates/images/logo.png',
-        });
+        // const fileName = data.studentName.trim() + Math.random(5000) + '.png';
+
+        // await htmlToImage(fileName, htmlToImg, {
+        //   logo: __dirname + '/templates/images/logo.png',
+        // });
 
         const mailOptions = {
           from: process.GOOGLE_MAIL,
@@ -98,11 +104,14 @@ const sendMail = async (data) => {
               path: __dirname + '/templates/images/logo.png',
               cid: 'logo',
             },
-            {
-              filename: fileName,
-              path: __dirname + `/htmlImages/${fileName}`,
-              cid: 'tag',
-            },
+            // {
+            //   filename: fileName,
+            //   path: __dirname + `/htmlImages/${fileName}`,
+            //   cid: 'tag',
+            // },
+            // {
+            //   path: logoImgUri,
+            // },
           ],
         };
         try {
