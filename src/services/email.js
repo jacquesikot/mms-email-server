@@ -75,13 +75,18 @@ const sendMail = async (data) => {
           studentName: data.studentName,
           studentClass: data.studentClass,
           qrCode: data.qrCode,
+          logo: 'cid:logo',
         };
 
         const htmlToImg = template(replacementsImg);
 
-        await htmlToImage(data.studentName.trim() + '.png', htmlToImg, {
-          logo: __dirname + '/templates/images/logo.png',
-        });
+        await htmlToImage(
+          data.studentName.trim() + Math.random() + '.png',
+          htmlToImg,
+          {
+            logo: __dirname + '/templates/images/logo.png',
+          }
+        );
 
         const mailOptions = {
           from: process.GOOGLE_MAIL,
